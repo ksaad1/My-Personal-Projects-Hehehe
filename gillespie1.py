@@ -80,4 +80,37 @@ C_dplot, = plt.plot(t, y[:, 2], label="$C$ in differential equation")  # C
 D_dplot, = plt.plot(t, y[:, 3], label="$D$ in differential equation")  # D
 
 plt.legend(handles=[A_dplot, B_dplot, C_dplot, D_dplot, A_plot, B_plot, C_plot, D_plot])
+# plt.show()
+
+new_tend = t[-1]
+y0 = [1000, 1000, 1000, 1000]
+t = np.linspace(0, new_tend, num=1000)
+params = [k1, k2]
+
+
+def sim(variables, t, params):
+    A = variables[0]
+    B = variables[1]
+    C = variables[2]
+    D = variables[3]
+
+    k1 = params[0]
+    k2 = params[1]
+
+    dAdt = -k1 * A * B
+    dBdt = (-k1 * A * B) - (2 * k2 * B ** 2 * C)
+    dCdt = (2 * k1 * A * B) - (k2 * B ** 2 * C)
+    dDdt = k2 * B ** 2 * C
+
+    return [dAdt, dBdt, dCdt, dDdt]
+
+
+y = odeint(sim, y0, t, args=(params,))
+
+A_dplot, = plt.plot(t, y[:, 0], label="$A$ in differential equation")  # A
+B_dplot, = plt.plot(t, y[:, 1], label="$B$ in differential equation")  # B
+C_dplot, = plt.plot(t, y[:, 2], label="$C$ in differential equation")  # C
+D_dplot, = plt.plot(t, y[:, 3], label="$D$ in differential equation")  # D
+
+plt.legend(handles=[A_dplot, B_dplot, C_dplot, D_dplot, A_plot, B_plot, C_plot, D_plot])
 plt.show()
